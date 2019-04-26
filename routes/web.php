@@ -10,8 +10,40 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+
+class TestEvent implements ShouldBroadcast
+{
+    public $text;
+
+    public function __construct($text)
+    {
+        $this->text = $text;
+    }
+
+    public function broadcastOn()
+    {
+        return ['test-channel'];
+    }
+}
+
+Route::get('/broadcast', function() {
+    event(new TestEvent('Broadcasting in Laravel using Pusher!'));
+
+    return view('welcome');
+});
+
 
 Route::get('/', function () {
+    return view('welcome');
+});
+Route::get('/bridge', function() {
+    // $pusher = App::make('pusher');
+    //
+    // $pusher->trigger( 'test-channel',
+    //                   'test-event',
+    //                   array('text' => 'Preparing the Pusher Laracon.eu workshop!'));
+
     return view('welcome');
 });
 

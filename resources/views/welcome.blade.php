@@ -96,4 +96,22 @@
             </div>
         </div>
     </body>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <!-- Popper.JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS -->
+    <script sr
+    <script src="//js.pusher.com/3.0/pusher.min.js"></script>
+    <script>
+        Pusher.log = function(msg) {
+        console.log(msg);
+        };
+      $(function(){
+        var pusher = new Pusher("d1f3cd00974ee36279c7")
+        var channel = pusher.subscribe('test-channel');
+        channel.bind('test-event', function(data) {
+          alert(data.text);
+        });
+      });
+    </script>
 </html>

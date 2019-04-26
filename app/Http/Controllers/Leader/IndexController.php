@@ -1,11 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Leader;
+namespace App\Http\Controllers\Student;
 
+use App\Http\Controllers\Controller as Controller;
 use Illuminate\Http\Request;
 use Auth;
-use App\Models\User;
-use App\Models\Course;
+use App\User;
+use App\Course;
+use App\University as Uni;
+use App\Module;
+use App\UserCourse;
 
 class IndexController extends Controller
 {
@@ -24,22 +28,51 @@ class IndexController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function getIndex()
     {
-      return view('student.index')
+      $courses = Course::all();
+      $return = [];
+        foreach ($courses as $course) {
+            $user = User::find($course->leader_id);
+            $name =  $user->first_name . ' ' . $user->last_name;
+            $uni = Uni::find($course->university_id);
+            $return[] = [$course->title, $course->description, $name, $uni->name, $course->id];
+        }
+      return view('student.index', [
+        'courses' => $return,
+      ]);
     }
 
-    public function getRegistered()
+    public function viewCourse(Request $request)
     {
+      $id = Request()->input('courseId');
 
-      return view('leader.course_registration')
+      $course = Course::find($id);
+      $uni = Uni::find($course->university_id);
+      $return = [];
+      $modules = Module::where('course_id', $id)
+                        ->get();
+      $joined = UserCourse::where('course_id', $id)
+                          ->where('user_id', Auth::id())
+                          ->get();
+        foreach ($modules as $module) {
+            $user = User::find($module->leader_id);
+            $name =  $user->first_name . ' ' . $user->last_name;
+            $return[] = [$module->title, $module->description, $name];
+        }
+
+
+
+
+      return view('student.viewCourse', [
+        'course' => $course,
+        'modules' => $return,
+        'joined' => $joined,
+        'uni' => $uni,
+      ]);
     }
-    public function postRegistered()
-    {
-      $user = Auth::user();
-      $role = $user['role'];
-      return view('leader.index')
-    }
+
+
 
 
 }
