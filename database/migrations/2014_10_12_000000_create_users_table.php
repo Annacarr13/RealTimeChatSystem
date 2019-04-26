@@ -15,14 +15,22 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name');
+            $table->string('first_name');
+            $table->string('last_name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->boolean('email_verified');
+            $table->string('mobile')->unique();
+            $table->boolean('mobile_verified');
             $table->string('password');
+            $table->unsignedBigInteger('university_id');
+            $table->unsignedBigInteger('module_id');
             $table->rememberToken();
             $table->timestamps();
+
+          
         });
     }
+
 
     /**
      * Reverse the migrations.

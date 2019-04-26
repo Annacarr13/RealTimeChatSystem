@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Auth;
+
+
 
 class LoginController extends Controller
 {
@@ -25,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/logged_in';
 
     /**
      * Create a new controller instance.
@@ -36,4 +39,42 @@ class LoginController extends Controller
     {
         $this->middleware('guest')->except('logout');
     }
+
+    public function checkRole()
+  {
+    // This is how the intended function works
+    // Pulling from session completely removes whatever was placed.
+    $user = Auth::user();
+
+    // If the intended url was the login or logout, it becomes the home index $redirectTo
+    $path = $this->getRouteGroupIndex($user['role']);
+
+      return Redirect()->to($path);
+
+
+  }
+
+  public function getRouteGroupIndex($role)
+  {
+
+      switch ($role)
+      {
+          case 'admin':
+              return '/admin';
+              break;
+          case 'dean':
+              return '/dean';
+              break;
+          case 'leader':
+              return '/courseLeader';
+              break;
+          case 'lecturer':
+              return '/lecturer';
+              break;
+          case 'student':
+              return '/student';
+              break;
+
+      }
+  }
 }
