@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller as Controller;
 use Illuminate\Http\Request;
 use Auth;
-use App\University as Uni;
+use App\University ;
 
 class UniversityController extends Controller
 {
@@ -26,7 +26,8 @@ class UniversityController extends Controller
      */
     public function getIndex()
     {
-      $unis = Uni::all();
+      $unis = University::all();
+
       $return = [];
         foreach ($unis as $uni) {
 
@@ -35,7 +36,7 @@ class UniversityController extends Controller
         }
 
         return view('Admin.university.index', [
-            'universities' => $return
+            'uni' => $return,
         ]);
 
     }
@@ -65,7 +66,7 @@ class UniversityController extends Controller
     public function getEdit()
     {
       $id = Request()->input('uniId');
-      $uni = Uni::find($id);
+      $uni = University::find($id);
       return view('admin.university.edit',[
         'uni' => $uni,
       ]);

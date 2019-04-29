@@ -29,6 +29,19 @@ class IndexController extends Controller
      */
     public function getIndex()
     {
+      $unis = Uni::all();
+
+      $return = [];
+        foreach ($unis as $uni) {
+
+
+            $return[] = [$uni->name, $uni->city, $uni->county, $uni->country, $uni->id];
+        }
+
+        return view('Admin.university.index', [
+            'uni' => $return,
+        ]);
+        
       return view('Admin.index');
     }
 

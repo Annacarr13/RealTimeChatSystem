@@ -18,11 +18,11 @@ class University extends Model
     ];
 
     public function module() {
-        return $this->hasMany('App\Module', 'foreign_key');
+        return $this->hasMany('App\Course', 'foreign_key');
       }
     public function dean()
     {
-        return $this->hasOne('App\Dean');
+        return $this->hasOne('App\User');
     }
 
 }
